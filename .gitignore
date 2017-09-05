@@ -5,3 +5,5 @@ dist/
 *.min.js.map
 node_modules
 MANIFEST
+.idea
+env

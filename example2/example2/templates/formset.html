@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <title>Django Formset JS example</title>
 
-{{ formset.media }}
+{{ tabs.media }}
 
 </head>
 <body>
@@ -12,13 +12,13 @@
 
     {% load formset_tags %}
 
-    <div id="formset" data-formset-prefix="{{ formset.prefix }}">
-        {{ formset.management_form }}
+    <div id="tabsFormset" data-formset-prefix="{{ tabs.prefix }}">
+        {{ tabs.management_form }}
 
         <div data-formset-body>
             <!-- New forms will be inserted in here -->
-            {% for form in formset %}
-                {% include "form.html" with form=form only %}
+            {% for tab in tabs %}
+                {% include "form.html" with form=tab only %}
             {% endfor %}
         </div>
 
@@ -27,7 +27,7 @@
         any scripts -->
         <script type="form-template" data-formset-empty-form>
             {% escapescript %}
-                {% include "form.html" with form=formset.empty_form only %}
+                {% include "form.html" with form=tabs.empty_form only %}
             {% endescapescript %}
         </script>
 
@@ -35,12 +35,35 @@
         <input type="button" value="Add another" data-formset-add>
 
         <script>jQuery(function($) {
-            $("#formset").formset().on('formAdded', function() {
+            $("#tabsFormset").formset({
+                animateForms: false,
+                formsetPrefix: 'formset-prefix',
+                deleteButton: '[data-formset-delete-button]',
+            }).on('formAdded', function(event) {
                 console.log("Form added", this, arguments);
+
+                var new_form = event.target;
+                $(new_form).find(".nested-formset-sublist").formset({
+                    form: '[data-nested-formset-form]',
+                    emptyForm: 'script[type=form-template][data-nested-formset-empty-form]',
+                    body: '[data-nested-formset-body]',
+                    add: '[data-nested-formset-add]',
+                    deleteButton: '[data-nested-formset-delete]',
+                    hasMaxFormsClass: 'has-max-forms',
+                    animateForms: false,
+                    formsetPrefix: 'nested-formset-prefix'
+                });
+
             }).on('formDeleted', function() {
                 console.log("Form deleted", this, arguments);
             });
-        });</script>
+
+
+            $(document).on('click', '.add-answer', function(e){
+                var $form = $(this).parents('.trivia-item-form');
+            });
+        });
+        </script>
 
     </div>
 

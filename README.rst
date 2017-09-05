@@ -209,6 +209,10 @@ The jQuery plugin takes the following options:
   Whether to animate form addition/deletion.
   Defaults to ``false``.
 
+``formsetPrefix``:
+  The value of ``{{ formset.prefix }}`` had been given to the management form.
+  This has been added to differentiate forms in case having several formsets on a page
+
 Javascript API
 --------------
 

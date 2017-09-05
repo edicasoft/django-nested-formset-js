@@ -1,7 +1,48 @@
-<div data-formset-form>
-    Foo: {{ form.foo }}
+<div data-formset-form class="formset-tab">
+    Title: {{ form.title }}
     {% if form.DELETE %}
         {{ form.DELETE }}
         <button type="button" data-formset-delete-button>Delete form</button>
     {% endif %}
+
+<div data-nested-formset-prefix="{{ form.nested.prefix }}" class="nested-formset-sublist">
+    {{ form.nested.management_form }}
+    <div data-nested-formset-body>
+        {% for listrow in form.nested %}
+            <div data-nested-formset-form>
+                {{ listrow.title }}
+                <div class="remove-sublistrow" data-nested-formset-delete>
+                    <a href="javascript:void(0);">
+                        remove sublist row
+                    </a>
+                </div>
+                <div class="add-sublistrow" data-nested-formset-add>
+                    <a href="javascript:void(0);">
+                        add sublist row
+                    </a>
+                </div>
+                <div class="">{{ listrow.DELETE }}{{ listrow.id }}</div>
+            </div>
+        {% endfor %}
+    </div>
+{% with listrow=form.nested.empty_form %}
+        <script type="form-template" data-nested-formset-empty-form>
+            <div data-nested-formset-form>
+                {{ listrow.title }}
+                <div class="remove-sublistrow" data-nested-formset-delete>
+                    <a href="javascript:void(0);">
+                        remove sublist row
+                    </a>
+                </div>
+                <div class="add-sublistrow" data-nested-formset-add>
+                    <a href="javascript:void(0);">
+                        add sublist row
+                    </a>
+                </div>
+                <div class="">{{ listrow.DELETE }}{{ listrow.id }}</div>
+            </div>
+        </script>
+{% endwith %}
+</div>
+
 </div>

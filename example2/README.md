@@ -4,7 +4,7 @@ Look in ``example/views.py``, ``example/templates/formset.html``, and ``example/
 
 To run the example::
 
-    $ cd django-formset-js/example/
+    $ cd django-formset-js/example2/
     $ virtualenv venv
     $ source venv/bin/activate
     $ pip install -r ../requirements.txt
