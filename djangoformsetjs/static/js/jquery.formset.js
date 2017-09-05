@@ -20,11 +20,11 @@
         this.$body = this.$formset.find(this.opts.body);
         this.$add = this.$formset.find(this.opts.add);
 
-        this.formsetPrefix = $(el).data('formset-prefix');
+        this.formsetPrefix = $(el).data(this.opts.formsetPrefix);
 
         // Bind to the `Add form` button
         this.addForm = $.proxy(this, 'addForm');
-        this.$add.click(this.addForm);
+        this.$formset.on('click', this.opts.add ,this.addForm);
 
         // Bind receiver to `formAdded` and `formDeleted` events
         this.$formset.on('formAdded formDeleted', this.opts.form, $.proxy(this, 'checkMaxForms'));
@@ -53,7 +53,8 @@
         add: '[data-formset-add]',
         deleteButton: '[data-formset-delete-button]',
         hasMaxFormsClass: 'has-max-forms',
-        animateForms: false
+        animateForms: false,
+        formsetPrefix: 'formset-prefix'
     };
 
     Formset.prototype.addForm = function() {
@@ -65,8 +66,11 @@
         var newIndex = this.totalFormCount();
         this.$managementForm('TOTAL_FORMS').val(newIndex + 1);
 
+        var formsetEmptyPrefix = this.formsetPrefix + '-__prefix__';
+        var newFormsetPrefixIndex = this.formsetPrefix + '-' +newIndex;
+
         var newFormHtml = this.$emptyForm.html()
-            .replace(new RegExp('__prefix__', 'g'), newIndex)
+            .replace(new RegExp(formsetEmptyPrefix, 'g'), newFormsetPrefixIndex)
             .replace(new RegExp('<\\\\/script>', 'g'), '</script>');
 
         var $newFormFragment = $($.parseHTML(newFormHtml, this.$body.document, true));
